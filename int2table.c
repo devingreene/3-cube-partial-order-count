@@ -29,6 +29,7 @@ void int2table(ui n)
 				a += bit;
 			}
 			else b = a + bit;
+			/* allocate if no entries */
 			if(potable[a]==0){
 				potable[a]=block0;
 				block0 += CARD;

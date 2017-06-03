@@ -37,9 +37,9 @@ ui inflate9to12(ui graph){
 ui compress12to9(ui graph){
 	/* inverse of inflate9to12 */
 	ui a,b;
-	a=0xf00&graph;
-	b=0x0f0&graph;
-	graph &= 0x00f;
+	a=0xe00&graph;
+	b=0x0e0&graph;
+	graph &= 0x00e;
 	a >>= 3;
 	b >>= 2;
 	graph >>= 1;
