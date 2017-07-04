@@ -1,0 +1,43 @@
+NONSOURCE := int2table.o IsPoset.o main.o symmetries3.o\
+			filter_grain.o fillPermBlock.o dyckCheck.o IsCompat.o \
+			mainDyck.o filterDyck.o
+
+.PHONY : execs
+execs : countAllPoz3 countAllPozDyck3
+
+ifeq ($(CFLAGS),-ggdb)
+OPTIMIZATION_OPT =
+else 
+OPTIMIZATION_OPT = -O3
+endif
+
+EX_CFLAGS := $(CFLAGS) -DGRAIN $(OPTIMIZATION_OPT)
+
+countAllPoz3 : int2table.o IsPoset.o main.o symmetries3.o filter_grain.o
+	cc $(EX_CFLAGS)  $^ -o $@
+countAllPozDyck3 : int2table.o IsPoset.o mainDyck.o symmetries3.o filterDyck.o \
+						fillPermBlock.o dyckCheck.o IsCompat.o 
+	cc $(EX_CFLAGS) $^ -o $@
+IsCompat.o : IsCompat.c headers.h
+	cc $(EX_CFLAGS) -c $<
+dyckCheck.o : dyckCheck.c headers.h
+	cc $(EX_CFLAGS) -c $<
+fillPermBlock.o : fillPermBlock.c headers.h
+	cc $(EX_CFLAGS) -c $<
+int2table.o : int2table.c headers.h
+	cc $(EX_CFLAGS) -c $<
+IsPoset.o : IsPoset.c headers.h
+	cc $(EX_CFLAGS) -c $<
+main.o : main.c headers.h
+	cc $(EX_CFLAGS) -c $< 
+mainDyck.o : main.c headers.h
+	cc $(EX_CFLAGS) -DDYCK -c $< -o $@
+symmetries3.o : symmetries3.c headers.h
+	cc $(EX_CFLAGS) -c $<
+filter_grain.o : filter_grain.c headers.h
+	cc $(EX_CFLAGS) -c $<
+filterDyck.o : filter_grain.c headers.h
+	cc $(EX_CFLAGS) -DDYCK -c $< -o $@
+
+clean : 
+	rm -f $(NONSOURCE)

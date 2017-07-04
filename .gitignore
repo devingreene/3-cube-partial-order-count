@@ -52,5 +52,7 @@ exec
 /output
 /printAllIsoPoz3
 /printAllIsoPozDyck3
+/countAllPoz3
+/countAllPozDyck3
 /devins_c_code
 /tags

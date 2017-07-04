@@ -55,15 +55,22 @@ ui compress12to9(ui graph){
    orders, we fix our search set to those graphs where 000 is a source node.  This
    reduces the number of iterations from 2**12 to 2**9. */
 
+#define BIGLOOP \
+	for(tcycle=0;tcycle<3;tcycle++) \
+	for(tau=0;tau<2;tau++) \
+	for(xorop=0;xorop<8;xorop++) \
+
+
 void filter (uch *checkbox){
 	/* See code in IsPoset.c for details about 'hot' */
 	ui Graph,tgraph;
 	// 0x1ff
-	for(graph=0x0;graph<=0x1ff;graph++){
+	for(graph=0x0;graph<=0x1ff;graph++)
+	{
 		if(checkbox[graph]) continue;
 		Graph = inflate9to12(graph);
 		int2table(Graph);
-		if(__glibc_unlikely(IsPoset())){
+		if(IsPoset()){
 #ifdef DYCK
 			for(i=0;i<S(CARD);i++){
 				if(IsCompat(Graph,permblock[i]) 
@@ -78,17 +85,14 @@ loc:;
 
 		/* flip through all symmetries */
 		uch tcycle,tau,xorop;
-		for(tcycle=0;tcycle<3;tcycle++){
-			for(tau=0;tau<2;tau++){
-				for(xorop=0;xorop<8;xorop++){
-					/* tgraph = `transformed graph' */
-					tgraph = symmetry(Graph,tcycle,tau,xorop);
-					if(IsBaseSource(tgraph)){
-						tgraph = compress12to9(tgraph);
-						checkbox[tgraph]=1;
-					}
-				}		
+		BIGLOOP
+		{
+			/* tgraph = `transformed graph' */
+			tgraph = symmetry(Graph,tcycle,tau,xorop);
+			if(IsBaseSource(tgraph)){
+				tgraph = compress12to9(tgraph);
+				checkbox[tgraph]=1;
 			}
-		}
+		}		
 	}
 }

@@ -66,8 +66,7 @@ ui symmetry(ui graph,uch tcycle,uch tau,uch xorop){
 		graph += (left>>4) + (mid<<4);
 	}	
 	/* xor by constant */
-	a = !!(xorop&0x1);
-	if(a){
+	if(xorop&0x1){
 		left = 0xf00&graph;
 		mid = 0x0f0&graph;
 		graph &= 0x00f; // right
@@ -77,8 +76,8 @@ ui symmetry(ui graph,uch tcycle,uch tau,uch xorop){
 		mid = doubleflip(mid,1,4);
 		graph += left + mid;
 	}
-	a = !!(xorop&0x2);
-	if(a){
+
+	if(xorop&0x2){
 		left = 0xf00&graph;
 		right = 0x00f&graph;
 		graph &= 0x0f0; // mid
@@ -88,8 +87,8 @@ ui symmetry(ui graph,uch tcycle,uch tau,uch xorop){
 		right = doubleflip(right,1,0);
 		graph += left + right;
 	}
-	a = !!(xorop&0x4);
-	if(a){
+
+	if(xorop&0x4){
 		mid = 0x0f0&graph;
 		right = 0x00f&graph;
 		graph &= 0xf00; // left
@@ -99,5 +98,6 @@ ui symmetry(ui graph,uch tcycle,uch tau,uch xorop){
 		right = doubleflip(right,2,0);
 		graph += mid + right;
 	}
+
 	return graph;
 }
