@@ -22,6 +22,7 @@ __pycache__
 *.ps
 *.dvi
 *.jpg
+*.jpeg
 *.png
 *.tiff
 
@@ -43,6 +44,8 @@ a.out
 a.out.dSYM
 *.gch
 exec
+/printAllIsoPoz3
+/printAllIsoPozDyck3
 
 #zip files
 *.zip
@@ -50,7 +53,5 @@ exec
 
 #Misc
 /output
-/printAllIsoPoz3
-/printAllIsoPozDyck3
 /devins_c_code
-/tags
+/README.html
