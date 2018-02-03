@@ -18,8 +18,17 @@ fillPermBlock.o : fillPermBlock.c headers.h
 	cc $(CFLAGS) -c $<
 int2table.o : int2table.c headers.h
 	cc  $(CFLAGS) -c $<
-IsPoset.o : IsPoset.c headers.h
-	cc  $(CFLAGS) -c $<
+
+ifeq ($(POSET1),)
+POSET_C = IsPoset.c
+else
+POSET_C = IsPoset1.c
+endif
+
+IsPoset.o : $(POSET_C) headers.h
+	cc  $(CFLAGS) -c $< -o $@
+	$(info Compiling $(POSET_C))
+
 main.o : main.c headers.h
 	cc  $(CFLAGS) -c $< 
 mainDyck.o : main.c headers.h

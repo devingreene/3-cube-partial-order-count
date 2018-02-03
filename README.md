@@ -12,6 +12,9 @@ To clean up the object files involved in building these binaries, do this.
 
 <tt>$ make clean</tt>
 
+(NOTE:  I have made no effort to make this code "multi-platform".  I wrote C code which compiles and runs
+on my GNU/Linux system, and that's it.)
+
 # What This Software Computes
 
 Consider the set of cube-shaped directed graphs, with nodes at the vertices and
@@ -32,6 +35,10 @@ To restrict the list to those graphs which satisfy the condition described in
 
 Please read the comments in <tt>main.c</tt> for an explanation of the encoding of these graphs.
 
+A similar analysis is partially carried out for the four dimensional cube in [3].
+
 [1] Coxeter, Harold Scott MacDonald (1973). <i>Regular Polytopes</i>. Courier Corporation.
 
-[2] Crona, Gavrushkin, Greene, Beerenwinkel. title. <i>Elife</i>. to appear
+[2] Kristina Crona, Alex Gavryushkin, Devin Greene, Niko Beerenwinkel (2018) Inferring genetic interactions from comparative fitness data.  eLife 2017;6:e28629 doi: 10.7554/eLife.28629 
+
+[3] https://github.com/devingreene/4-cube-partial-order-count.git
