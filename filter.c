@@ -8,6 +8,11 @@ uch IsCompat(ui n,uch *perm);
 int dyckCheck(uch* perm);
 ui symmetry(ui graph,uch tcycle,uch tau,uch xorop);
 static ui graph;
+
+#if defined DYCK && defined RAW_POSET_COUNT
+#error "Cannot define both DYCK and RAW_POSET_COUNT macros"
+#endif
+
 #ifdef DYCK
 ui i;
 #endif
@@ -16,6 +21,12 @@ ui i;
 /* We loop over graphs with 000 as a source.  So we can encode our graphs
    with 12 bit words.  The following two functions convert back and forth 
    between the 9 bit representation and the that with 12 bits */
+
+/* Note on macros DYCK and RAW_POSET_COUNT: 
+ * Set DYCK to print out a list of posets up to isomorphism satisfying the Dyck
+ * word condition.  Set RAW_POSET_COUNT to simply print out the number of poset
+ * without regard to isomorphism.
+ */
 
 int IsBaseSource(ui graph){
 	return !(0x111&graph);
@@ -55,15 +66,36 @@ ui compress12to9(ui graph){
    orders, we fix our search set to those graphs where 000 is a source node.  This
    reduces the number of iterations from 2**12 to 2**9. */
 
+/* TODO Horrible spagetti code!  Clean up later! */
+
 void filter (uch *checkbox){
 	/* See code in IsPoset.c for details about 'hot' */
 	ui Graph,tgraph;
-	// 0x1ff
-	for(graph=0x0;graph<=0x1ff;graph++){
+#ifdef RAW_POSET_COUNT
+	int count = 0;
+#define TOP (0xfff)
+#else
+#define TOP (0x1ff)
+#endif
+
+	for(graph=0x0;graph<=TOP;graph++){
+#ifndef RAW_POSET_COUNT
 		if(checkbox[graph]) continue;
 		Graph = inflate9to12(graph);
 		int2table(Graph);
-		if(__glibc_unlikely(IsPoset())){
+#else
+		int2table(graph);
+#endif
+
+		if(IsPoset()){
+#ifdef RAW_POSET_COUNT
+			count++;
+			continue;
+		}
+	}
+	printf("%d\n",count);
+}
+#endif
 #ifdef DYCK
 			for(i=0;i<S(CARD);i++){
 				if(IsCompat(Graph,permblock[i]) 
@@ -72,6 +104,7 @@ void filter (uch *checkbox){
 					goto loc;
 			}
 #endif
+#ifndef RAW_POSET_COUNT	
 			printf("%03x\n",Graph);
 loc:;
 		}
@@ -92,3 +125,4 @@ loc:;
 		}
 	}
 }
+#endif

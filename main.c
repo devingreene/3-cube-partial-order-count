@@ -41,7 +41,12 @@ int main(void){
 #ifdef DYCK
 	initializePermBlock();
 #endif
-	uch *checkbox=calloc(0x200,sizeof(char));
+	/* Just declared here, since raw count
+	 * doesn't need argument */
+	uch *checkbox; 
+#ifndef RAW_POSET_COUNT
+	checkbox=calloc(0x200,sizeof(char));
+#endif
 	filter(checkbox);
 	return 0;
 }

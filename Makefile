@@ -1,15 +1,20 @@
 NONSOURCE := int2table.o IsPoset.o main.o symmetries3.o\
 			filter.o fillPermBlock.o dyckCheck.o IsCompat.o \
-			mainDyck.o filterDyck.o
+			mainDyck.o filterDyck.o filterRawCount.o \
+			mainRawCount.o
 
 .PHONY : execs
-execs : printAllIsoPoz3 printAllIsoPozDyck3
+execs : printAllIsoPoz3 printAllIsoPozDyck3 printRawCount
 
 printAllIsoPoz3 : int2table.o IsPoset.o main.o symmetries3.o filter.o
 	cc  $^ -o $@
 printAllIsoPozDyck3 : int2table.o IsPoset.o mainDyck.o symmetries3.o filterDyck.o \
 						fillPermBlock.o dyckCheck.o IsCompat.o 
 	cc $^ -o $@
+printRawCount : int2table.o IsPoset.o mainRawCount.o symmetries3.o filterRawCount.o \
+						fillPermBlock.o dyckCheck.o IsCompat.o 
+	cc $^ -o $@
+
 IsCompat.o : IsCompat.c headers.h
 	cc $(CFLAGS) -c $<
 dyckCheck.o : dyckCheck.c headers.h
@@ -33,12 +38,16 @@ main.o : main.c headers.h
 	cc  $(CFLAGS) -c $< 
 mainDyck.o : main.c headers.h
 	cc  -DDYCK $(CFLAGS) -c $< -o $@
+mainRawCount.o : main.c headers.h
+	cc -DRAW_POSET_COUNT $(CFLAGS) -c $< -o $@
 symmetries3.o : symmetries3.c headers.h
 	cc  $(CFLAGS) -c $<
 filter.o : filter.c headers.h
 	cc $(CFLAGS) -c $<
 filterDyck.o : filter.c headers.h
 	cc -DDYCK $(CFLAGS) -c $< -o $@
+filterRawCount.o : filter.c headers.h
+	cc -DRAW_POSET_COUNT $(CFLAGS) -c $< -o $@
 
 clean : 
 	rm -f $(NONSOURCE)

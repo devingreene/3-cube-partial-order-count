@@ -46,6 +46,7 @@ a.out.dSYM
 exec
 /printAllIsoPoz3
 /printAllIsoPozDyck3
+/printRawCount
 
 #zip files
 *.zip
